@@ -11,7 +11,7 @@ class Program
     static async Task Main(string[] args)
     {
         var result = await GetCompletion("what is the capital of Japan?");
-        if (result != null)
+        if (!string.IsNullOrEmpty(result))
         {
             await File.WriteAllTextAsync($"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}-data.txt", result);
             Console.WriteLine(result);
