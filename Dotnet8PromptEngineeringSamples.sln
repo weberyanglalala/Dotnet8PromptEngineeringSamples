@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PE01.PrincipleAndGuidelines", "PE01.PrincipleAndGuidelines\PE01.PrincipleAndGuidelines.csproj", "{E135B065-9128-4FBC-88D4-4AC03A2BF95C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PE02.DocumentOutliner", "PE02.DocumentOutliner\PE02.DocumentOutliner.csproj", "{7B3C0A98-467E-4EF2-9F07-19646491ADBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{E135B065-9128-4FBC-88D4-4AC03A2BF95C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E135B065-9128-4FBC-88D4-4AC03A2BF95C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E135B065-9128-4FBC-88D4-4AC03A2BF95C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B3C0A98-467E-4EF2-9F07-19646491ADBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B3C0A98-467E-4EF2-9F07-19646491ADBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B3C0A98-467E-4EF2-9F07-19646491ADBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B3C0A98-467E-4EF2-9F07-19646491ADBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
