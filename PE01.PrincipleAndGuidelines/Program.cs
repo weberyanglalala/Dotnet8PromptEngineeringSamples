@@ -1,4 +1,5 @@
 ﻿using System.ClientModel;
+using System.Text;
 using OpenAI.Chat;
 
 namespace PE01.PrincipleAndGuidelines;
@@ -10,21 +11,33 @@ class Program
     static async Task Main(string[] args)
     {
         var result = await GetCompletion("what is the capital of Japan?");
-        Console.WriteLine(result);
+        if (result != null)
+        {
+            await File.WriteAllTextAsync($"{DateTime.Now:yyyy-MM-dd-HH-mm-ss}-data.txt", result);
+            Console.WriteLine(result);
+        }
     }
 
-    static async Task<string> GetCompletion(string prompt, string model = "gpt-4o")
-    {
-        ChatClient client = new(model, _openApiKey);
-        ChatCompletion chatCompletion = await client.CompleteChatAsync(prompt);
-        return $"{chatCompletion}";
-    }
-    
-    private static async Task GetChatCompletionSteaming(string source)
+    private static async Task<string> GetCompletion(string prompt, string model = "gpt-4o")
     {
         try
         {
-            var prompt = $"{source}";
+            ChatClient client = new(model, _openApiKey);
+            ChatCompletion chatCompletion = await client.CompleteChatAsync(prompt);
+            return $"{chatCompletion}";
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"Unexpected error: {e.Message}");
+            return null;
+        }
+    }
+
+    private static async Task<string> GetChatCompletionSteaming(string prompt)
+    {
+        try
+        {
+            var result = new StringBuilder();
             ChatClient client = new(model: "gpt-4o", _openApiKey);
             AsyncResultCollection<StreamingChatCompletionUpdate> updates
                 = client.CompleteChatStreamingAsync(prompt);
@@ -33,12 +46,16 @@ class Program
                 foreach (ChatMessageContentPart updatePart in update.ContentUpdate)
                 {
                     Console.Write(updatePart.Text);
+                    result.Append(updatePart.Text);
                 }
             }
+
+            return result.ToString();
         }
         catch (Exception e)
         {
             Console.WriteLine($"Unexpected error: {e.Message}");
+            return null;
         }
     }
 }
