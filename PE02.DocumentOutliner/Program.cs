@@ -16,7 +16,7 @@ class Program
         var jinaFileName = "jina.md";
         var openAiFileName = "openai.md";
 
-        var jinaApiResponse = await GetGinaApiResponse(url);
+        var jinaApiResponse = await GetJinaReaderApiResponse(url);
 
         if (!string.IsNullOrEmpty(jinaApiResponse))
         {
@@ -30,7 +30,7 @@ class Program
         }
     }
 
-    private static async Task<string> GetGinaApiResponse(string uri)
+    private static async Task<string> GetJinaReaderApiResponse(string uri)
     {
         try
         {
