@@ -24,7 +24,7 @@ class Program
         }
 
         var openAiResponse = await GetChatCompletionSteaming(jinaApiResponse);
-        if (string.IsNullOrEmpty(openAiResponse))
+        if (!string.IsNullOrEmpty(openAiResponse))
         {
             await File.WriteAllTextAsync($"{dateTimeString}-{openAiFileName}", openAiResponse);
         }
