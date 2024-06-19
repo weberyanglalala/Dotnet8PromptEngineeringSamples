@@ -27,7 +27,7 @@ namespace PE04.Summarize
                             User: {{$request}}
                             Assistant: ");
             // Create choices
-            List<string> choices = ["ContinueConversation", "EndConversation"];
+            List<string> choices = ["Continue", "End", "Summarize"];
 
             // Create a chat history
             ChatHistory history = [];
@@ -40,9 +40,11 @@ namespace PE04.Summarize
                                <message role="system">
                                You are a experienced web developer.
                                You are willing to answer questions about web development.
+                               if user intend to summarize the conversation, please summarize the all the chat histories in markdown with
+                               clear headings and bullet points and ask for end conversation.
+                               if user intend to end the conversation, reply with {{choices.[1]}}.
                                If you are unsure, reply with {{choices.[0]}}.
                                Choices: {{choices}}.</message>
-
                                {{#each chatHistory}}
                                    <message role="{{role}}">{{content}}</message>
                                {{/each}}
@@ -74,7 +76,7 @@ namespace PE04.Summarize
                 );
 
                 // End the chat if the intent is "Stop"
-                if (intent.ToString() == "EndConversation")
+                if (intent.ToString().ToUpper() == "END")
                 {
                     WriteHistoryToFile(history);
                     break;
