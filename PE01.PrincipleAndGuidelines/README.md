@@ -50,8 +50,8 @@
 
 #### Tactic4: Few-shot prompting
 
-- give successful examples of completing tasks then ask model to perform similar tasks
-- e.g. what is a proper structure article for student to learn about a new topic?
+- Give successful examples of completing tasks then ask model to perform similar tasks
+- e.g. What is a proper structure article for student to learn about a new topic?
 - LAB: SQL(TODO) how to use few-shot prompting?
     - 問題本質
     - 解題的步驟
@@ -59,8 +59,8 @@
 
 ### Give the model time to think
 
-- prevent the model rushing to give out an incorrect answer
-- try to rephrase the question, give more context, or give more examples
+- Prevent the model rushing to give out an incorrect answer
+- Try to rephrase the question, give more context, or give more examples.
 
 #### Tactic1: Specify the steps to complete the task
 

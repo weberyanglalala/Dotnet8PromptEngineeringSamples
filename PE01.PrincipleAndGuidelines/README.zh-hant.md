@@ -68,3 +68,39 @@
 ### 減少幻想
 - **策略**：要求模型先找到相關引用，然後再生成答案，確保可追溯性和準確性。
 
+## Prompt Guide
+- Prompt Engineering Guide By ChatGPT
+  - https://platform.openai.com/docs/guides/prompt-engineering
+  - https://cookbook.openai.com/articles/related_resources
+- Prompt Engineering Guide
+  - https://www.coze.com/store/bot/7330103362614099986?bot_id=true
+  - https://promptingguide.azurewebsites.net/introduction/tips
+
+1. Write clear instructions
+   - includes more details to your query: 提供更明確的上下文
+   - adopt persona: 角色扮演
+   - use delimiters to indicate distinct part: 利用 xml, markdown 語法、文字刪節號、文字分隔符、<tag>
+   - Specify the steps required to complete a task: 告訴模型解題步驟
+   - provide examples: 提供解題範例(few-shot prompting)
+   - specify output result length or format: 定義模型輸出格式以及文字長度
+2. Provide reference text
+   - Instruct the model to answer using a reference text 要模型參考既有文件或知識庫
+3. Split complex tasks into simpler subtasks 將複雜任務拆解成更細微的子任務
+   - Give the model time to "think": Instruct the model to work out its own solution before rushing to a conclusion
+4. Use external tools
+   - RAG
+   - 呼叫外部 API
+5. Test changes systematically
+
+## 好的提問
+  - 指示：明確指示目的
+  - 背景：完整的上下文說明
+  - 輸出：定義輸出格式範例 
+  - 範例：提供格式化的問答範例
+   
+## 技巧
+  - 角色扮演
+  - 要求 ChatGPT 擔任某領域的專家
+  - 提問明確的主題
+  - 限定輸出格式以及範圍
+
