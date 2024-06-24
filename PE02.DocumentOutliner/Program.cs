@@ -6,30 +6,43 @@ namespace PE02.DocumentOutliner;
 
 class Program
 {
-    private static readonly string JinaReaderApiPrefix = "https://r.jina.ai/";
-    private static readonly string OpenAiApiKey = "sk-??";
+    private const string JinaReaderApiPrefix = "https://r.jina.ai/";
+    private const string OpenAiApiKey = "sk-??";
+    private const string SystemPrompt = """
+                                        You are a senior web developer reading a document from providing document source.
+                                        You need to create an development document for a coding student.
+                                        Please provide step by step instructions and clear explanations for each step.
+                                        Please generate output in a markdown format and output using traditional chinese.
+                                        =================
+                                        """;
+    private const string Uri = "https://jina.ai/reader";
+    private const string JinaFileName = "jina.md";
+    private const string OpenAiFileName = "openai.md";
 
     static async Task Main(string[] args)
     {
-        var url = "https://stackoverflow.com/questions/33164725/confusion-between-isnan-and-number-isnan-in-javascript";
         var dateTimeString = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss");
-        var jinaFileName = "jina.md";
-        var openAiFileName = "openai.md";
 
-        var jinaApiResponse = await GetJinaReaderApiResponse(url);
+        var jinaApiResponse = await GetJinaReaderApiResponse(Uri);
 
         if (!string.IsNullOrEmpty(jinaApiResponse))
         {
-            await File.WriteAllTextAsync($"{dateTimeString}-{jinaFileName}", jinaApiResponse);
+            await File.WriteAllTextAsync($"{dateTimeString}-{JinaFileName}", jinaApiResponse);
         }
 
-        var openAiResponse = await GetChatCompletionSteaming(jinaApiResponse);
+        var prompt = $"{SystemPrompt}{jinaApiResponse}";
+        var openAiResponse = await GetChatCompletionStreaming(prompt);
         if (!string.IsNullOrEmpty(openAiResponse))
         {
-            await File.WriteAllTextAsync($"{dateTimeString}-{openAiFileName}", openAiResponse);
+            await File.WriteAllTextAsync($"{dateTimeString}-{OpenAiFileName}", openAiResponse);
         }
     }
 
+    /// <summary>
+    /// Get Jina Reader API response by URI
+    /// </summary>
+    /// <param name="uri">uri</param>
+    /// <returns>Get a well-structured and LLM friendly content from Jina Reader API.</returns>
     private static async Task<string> GetJinaReaderApiResponse(string uri)
     {
         try
@@ -37,7 +50,7 @@ class Program
             string requestUrl = $"{JinaReaderApiPrefix}{uri}";
             using HttpClient client = new HttpClient();
             // Add DOM element selector to extract the content from the page
-            client.DefaultRequestHeaders.Add("X-Target-Selector", "#content");
+            // client.DefaultRequestHeaders.Add("X-Target-Selector", "#content");
             HttpResponseMessage response = await client.GetAsync(requestUrl);
             response.EnsureSuccessStatusCode();
             string responseBody = await response.Content.ReadAsStringAsync();
@@ -50,20 +63,17 @@ class Program
         }
     }
 
-    private static async Task<string> GetChatCompletion(string source)
+    /// <summary>
+    /// Get Chat Completion from OpenAI API Using OpenAI .NET SDK.
+    /// </summary>
+    /// <param name="prompt">user prompt</param>
+    /// <param name="model">model id</param>
+    /// <returns>OpenAI chat completion api response message.</returns>
+    private static async Task<string> GetChatCompletion(string prompt, string model = "gpt-4o")
     {
         try
         {
-            ChatClient client = new(model: "gpt-4o", OpenAiApiKey);
-            var assistantPrompt =
-                """
-                You are a senior web developer reading a document from providing document source.
-                You need to create an development document for a coding student.
-                Please provide step by step instructions and clear explanations for each step.
-                Please generate output in a markdown format and output using traditional chinese.
-                =================
-                """;
-            var prompt = $"{assistantPrompt}{source}";
+            ChatClient client = new(model, OpenAiApiKey);
             ChatCompletion completion = await client.CompleteChatAsync(prompt);
             return $"{completion}";
         }
@@ -74,21 +84,18 @@ class Program
         }
     }
 
-    private static async Task<string> GetChatCompletionSteaming(string source)
+    /// <summary>
+    /// Get chat completion streaming result from OpenAI API using OpenAI .NET SDK.
+    /// </summary>
+    /// <param name="prompt">user prompt</param>
+    /// <param name="model">model id</param>
+    /// <returns>OpenAI chat completion api streaming response.</returns>
+    private static async Task<string> GetChatCompletionStreaming(string prompt, string model = "gpt-4o")
     {
         try
         {
             StringBuilder result = new();
-            var assistantPrompt =
-                """
-                You are a senior web developer reading a document from providing document source.
-                You need to create an development document for a coding student.
-                Please provide step by step instructions and clear explanations for each step.
-                Please generate output in a markdown format and output using traditional chinese.
-                =================
-                """;
-            var prompt = $"{assistantPrompt}{source}";
-            ChatClient client = new(model: "gpt-4o", OpenAiApiKey);
+            ChatClient client = new(model, OpenAiApiKey);
             AsyncResultCollection<StreamingChatCompletionUpdate> updates
                 = client.CompleteChatStreamingAsync(prompt);
             await foreach (StreamingChatCompletionUpdate update in updates)
