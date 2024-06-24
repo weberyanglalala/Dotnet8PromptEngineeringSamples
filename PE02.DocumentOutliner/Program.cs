@@ -35,7 +35,7 @@ class Program
         try
         {
             string requestUrl = $"{JinaReaderApiPrefix}{uri}";
-            HttpClient client = new HttpClient();
+            using HttpClient client = new HttpClient();
             // Add DOM element selector to extract the content from the page
             client.DefaultRequestHeaders.Add("X-Target-Selector", "#content");
             HttpResponseMessage response = await client.GetAsync(requestUrl);
